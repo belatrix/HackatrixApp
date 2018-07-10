@@ -38,6 +38,7 @@ flutter:
   assets:
     - images/hackatrix_logo.png
     - images/ic_launcher.png
+    - images/ic_idea.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

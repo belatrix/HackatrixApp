@@ -1,25 +1,20 @@
-import 'package:hackatrix/data/repository/event_repository.dart';
-import 'package:hackatrix/domain/model/event.dart';
+import 'package:hackatrix/presentation/util/preferences/preference_manager.dart';
 
 abstract class HomeView {
-  void onResult(List<Event> list);
+  void onUserLoaded(user);
 }
 
 class HomePresenter {
   HomeView _view;
-  EventRepository _repository;
+  PreferenceManager _preferences;
 
-  HomePresenter(this._view, this._repository);
+  HomePresenter(this._view) {
+    _preferences = new PreferenceManager();
+  }
 
-  void actionGetEventList(int city) {
-    print("cargando...");
-    _repository
-        .getEventList(city)
-        .then((items) => _view.onResult(items))
-        .catchError((onError) {
-      print(onError);
-      // _view.onLoadContactsError();
-      print("Error : $onError");
+  loadUser() {
+    _preferences.getUser().then((user) {
+      _view.onUserLoaded(user);
     });
   }
 }

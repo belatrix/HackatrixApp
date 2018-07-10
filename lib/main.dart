@@ -12,7 +12,7 @@ class HackatrixApp extends StatelessWidget {
     config();
     return new MaterialApp(
       home:  new HomePage(),
-      theme: theme.CompanyThemeData,
+      theme: theme.companyThemeData,
     );
   }
 

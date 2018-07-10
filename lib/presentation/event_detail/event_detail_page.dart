@@ -35,7 +35,7 @@ class EventDetailPage extends StatelessWidget {
                 expandedHeight: 200.0,
                 floating: false,
                 pinned: true,
-                iconTheme: theme.CompanyThemeIcon,
+                iconTheme: theme.companyThemeIcon,
                 elevation:
                     defaultTargetPlatform == TargetPlatform.android ? 5.0 : 0.0,
                 flexibleSpace: new FlexibleSpaceBar(
