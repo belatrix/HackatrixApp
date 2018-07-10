@@ -6,13 +6,12 @@ import 'package:hackatrix/presentation/util/theme.dart' as theme;
 void main() => runApp(new HackatrixApp());
 
 class HackatrixApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     config();
     return new MaterialApp(
-      home:  new HomePage(),
-      theme: theme.CompanyThemeData,
+      home: new HomePage(),
+      theme: theme.buildCompanyThemeData(),
     );
   }
 

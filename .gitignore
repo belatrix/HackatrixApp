@@ -1,0 +1,15 @@
+build/
+*.lock
+*.iml
+.idea/
+.flutter-plugins
+.packages
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+**/ios/Flutter/Generated.xcconfig
+**/ios/Runner/GeneratedPluginRegistrant.*
