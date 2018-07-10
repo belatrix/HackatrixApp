@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hackatrix/domain/model/event.dart';
 
-typedef void OnTapItemCallBack(Event item);
+typedef void OnTapItemCallBack(Event item, BuildContext context);
 
 class HomeItem extends StatelessWidget {
-  HomeItem(this._event, {this.callBack});
+  HomeItem(this._event, this.context,{this.callBack});
+
   final Event _event;
+  final BuildContext context;
   final OnTapItemCallBack callBack;
 
   @override
@@ -21,16 +23,18 @@ class HomeItem extends StatelessWidget {
     );
 
     return new Container(
-        key: new Key("${_event.id}"),
-        child: new Stack(children: <Widget>[
+      key: new Key("${_event.id}"),
+      child: new Stack(
+        children: <Widget>[
           new GridTile(
             child: imageHero,
             footer: new GridTileBar(
-              title: new Text(_event.title, overflow: TextOverflow.clip,  style: new TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w400
-                )),
+              title: new Text(_event.title,
+                  overflow: TextOverflow.clip,
+                  style: new TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400)),
               backgroundColor: Colors.black38,
             ),
           ),
@@ -38,8 +42,10 @@ class HomeItem extends StatelessWidget {
               child: new Material(
                   color: Colors.transparent,
                   child: new InkWell(
-                    onTap: () => callBack(_event),
+                    onTap: () => callBack(_event,context),
                   ))),
-        ]));
+        ],
+      ),
+    );
   }
 }
