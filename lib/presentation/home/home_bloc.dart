@@ -4,7 +4,6 @@ import 'package:hackatrix/domain/model/event.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeBloc {
-
   final EventRepository repository;
 
   Stream<List<Event>> _results = Stream.empty();
@@ -18,7 +17,9 @@ class HomeBloc {
 
   HomeBloc(this.repository) {
     _results =
-        _query.distinct().asyncMap(repository.getEventList).asBroadcastStream();
+        // Use  distinct() when you want to listen for different events
+        //_query.distinct().asyncMap(repository.getEventList).asBroadcastStream();
+        _query.asyncMap(repository.getEventList).asBroadcastStream();
   }
 
   void dispose() {

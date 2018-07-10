@@ -30,11 +30,6 @@ class HomePage2 extends StatelessWidget {
     );
   }
 
-  @override
-  void onResult(List<Event> list) {
-    _completer.complete();
-  }
-
   // Views
   @override
   Widget build(BuildContext context) {
@@ -70,10 +65,13 @@ class HomePage2 extends StatelessWidget {
       ),
       onRefresh: () async {
         _completer = new Completer<Null>();
+
         homeBloc.query.add(1);
+
         homeBloc.results.listen((List<Event> list) {
-          if (_completer != null) _completer.complete();
+          if (_completer != null && !_completer.isCompleted) _completer.complete();
         });
+
         return _completer.future;
       },
     );
