@@ -1,4 +1,0 @@
-#Tue Jul 10 03:10:42 PET 2018
-base.0=/Users/Kaldarel/Desktop/Workspace/Flutter/HackatrixApp/HackatrixApp/build/app/intermediates/transforms/dexMerger/debug/0
-path.0=classes.dex
-renamed.0=classes.dex

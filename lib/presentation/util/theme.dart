@@ -17,6 +17,12 @@ TextTheme buildCompanyTextTheme(TextTheme base) {
   return base.copyWith().apply();
 }
 
+ListTileTheme buildDrawerTileTheme() {
+  return ListTileTheme(
+    selectedColor: CompanyColors.orange.shade200,
+  );
+}
+
 class CompanyColors {
   static const offwhite = const Color(0xF0F0F0);
 
