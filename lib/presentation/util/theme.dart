@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 
-final ThemeData companyThemeData = ThemeData.light().copyWith(
+ThemeData buildCompanyThemeData() {
+  ThemeData base = ThemeData.light();
+  return base.copyWith(
     brightness: Brightness.light,
     primaryColor: CompanyColors.orange,
     accentColor: CompanyColors.blue,
     primaryColorDark: CompanyColors.orange.shade700,
-    backgroundColor: CompanyColors.offwhite);
+    backgroundColor: CompanyColors.offwhite,
+    splashColor: CompanyColors.orange,
+    textTheme: buildCompanyTextTheme(base.textTheme),
+  );
+}
+
+TextTheme buildCompanyTextTheme(TextTheme base) {
+  return base.copyWith().apply();
+}
 
 class CompanyColors {
   static const offwhite = const Color(0xF0F0F0);
