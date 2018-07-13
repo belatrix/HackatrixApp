@@ -12,6 +12,15 @@ ThemeData buildCompanyThemeData() {
     textTheme: buildCompanyTextTheme(base.textTheme),
   );
 }
+ThemeData buildDarkCompanyThemeData() {
+  ThemeData base = ThemeData.light();
+  return base.copyWith(
+    brightness: Brightness.dark,
+    primaryColor: CompanyColors.orange,
+    accentColor: CompanyColors.blue,
+    canvasColor: CompanyColors.orange,
+  );
+}
 
 TextTheme buildCompanyTextTheme(TextTheme base) {
   return base.copyWith().apply();
@@ -23,8 +32,25 @@ ListTileTheme buildDrawerTileTheme() {
   );
 }
 
+class CompanyTextStyle {
+
+  CompanyTextStyle._();
+
+  static const TextStyle H6 = const TextStyle(
+    letterSpacing: 0.25,
+    fontSize: 20.0,
+    color: Colors.black87,
+  );
+
+  static const TextStyle Overline = const TextStyle(
+    letterSpacing: 2.0,
+    fontSize: 12.0,
+    color: Colors.black87,
+  );
+}
+
 class CompanyColors {
-  static const offwhite = const Color(0xF0F0F0);
+  static const offwhite = const Color(0xFFF0F0F0);
 
   static const orangePrimaryValue = 0xFFF49926;
   static const bluePrimaryValue = 0xFF1A4F9E;

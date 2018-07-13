@@ -6,6 +6,7 @@ import 'package:hackatrix/domain/model/meeting.dart';
 import 'package:hackatrix/domain/model/vote.dart';
 
 abstract class EventRepository {
+  Future<List<Event>> getUpcomingEventList(int city);
   Future<List<Event>> getEventList(int city);
   Future<List<Idea>> getIdeasByEventList(int eventId);
   Future<List<Vote>> getVotesByEventList(int eventId);

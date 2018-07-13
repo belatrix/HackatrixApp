@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hackatrix/domain/model/user.dart';
-import 'package:hackatrix/presentation/event/event_page.dart';
 import 'package:hackatrix/presentation/profile/login/login_page.dart';
 import 'package:hackatrix/presentation/util/theme.dart';
 
@@ -153,15 +152,6 @@ class DrawerWidget {
   String getDrawerTitle(int pos) {
     ListItem item = drawerItems[pos];
     return item.showTitle ? item.drawerTitle : "";
-  }
-
-  Widget getDrawerItemWidget(int pos) {
-    switch (pos) {
-      case 0:
-        return new EventPage();
-      default:
-        return null;
-    }
   }
 }
 //

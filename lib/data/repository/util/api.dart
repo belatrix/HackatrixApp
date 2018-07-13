@@ -1,5 +1,6 @@
 const String BASE_URL = "https://bxevents.herokuapp.com:443";
 //Event
+const String API_UPCOMING_EVENT_LIST = BASE_URL + "/event/upcoming/list/";
 const String API_EVENT_LIST = BASE_URL + "/event/list/";
 const String API_EVENT_MEETING_LIST = BASE_URL + "/event/meeting/list/";
 const String API_EVENT_REGISTER_ATTENDANCE = BASE_URL + "/event/register/attendance/";

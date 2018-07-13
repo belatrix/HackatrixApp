@@ -13,12 +13,7 @@ class EventPresenter {
 
   void actionGetEventList(int city) {
     print("cargando...");
-    _repository
-        .getEventList(city)
-        .then((items) => _view.onResult(items))
-        .catchError((onError) {
-      print(onError);
-      // _view.onLoadContactsError();
+    _repository.getUpcomingEventList(city).then((items) => _view.onResult(items)).catchError((onError) {
       print("Error : $onError");
     });
   }

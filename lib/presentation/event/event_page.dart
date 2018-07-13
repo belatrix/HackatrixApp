@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hackatrix/data/repository/rest/event_rest.dart';
@@ -7,19 +5,22 @@ import 'package:hackatrix/domain/model/event.dart';
 import 'package:hackatrix/presentation/event/event_item.dart';
 import 'package:hackatrix/presentation/event/evento_presenter.dart';
 import 'package:hackatrix/presentation/event_detail/event_detail_page.dart';
+import 'package:hackatrix/presentation/util/theme.dart';
 
 class EventPage extends StatefulWidget {
+  final int _cityId;
+
+  EventPage(this._cityId);
+
   @override
-  _EventPageState createState() => new _EventPageState();
+  _EventPageState createState() {
+    return new _EventPageState();
+  }
 }
 
 class _EventPageState extends State<EventPage> implements EventView {
   EventPresenter _presenter;
-  List<Event> _elements = List();
-  Completer<Null> _completer;
-
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  List<dynamic> _elements = List();
 
   _EventPageState() {
     _presenter = new EventPresenter(this, new EventRest());
@@ -32,21 +33,7 @@ class _EventPageState extends State<EventPage> implements EventView {
   }
 
   _firstLoad() async {
-    _refreshIndicatorKey.currentState.show();
-  }
-
-  Future<Null> _refreshList() {
-    _completer = new Completer<Null>();
-    _presenter.actionGetEventList(1);
-    return _completer.future;
-  }
-
-  @override
-  void onResult(List<Event> list) {
-    _completer.complete();
-    setState(() {
-      _elements = list;
-    });
+    _presenter.actionGetEventList(widget._cityId);
   }
 
   void _onTapEvent(Event event) {
@@ -60,27 +47,54 @@ class _EventPageState extends State<EventPage> implements EventView {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      child: buildStaggeredGridView(),
-    );
+  void onResult(List<dynamic> list) {
+    for (int i = 0; i < list.length; i++) {
+      if (!list[i].isUpcoming) {
+        list[i].title = list[i].title.replaceAll("Hackatrix ", "");
+      }
+    }
+    _elements..add("");
+    setState(() {
+      _elements = list;
+    });
   }
 
-  RefreshIndicator buildStaggeredGridView() {
-    return new RefreshIndicator(
-      key: _refreshIndicatorKey,
-      child: StaggeredGridView.countBuilder(
-          crossAxisCount: 2,
-          padding: EdgeInsets.all(4.0),
-          itemCount: _elements.length,
-          staggeredTileBuilder: (int index) =>
-              new StaggeredTile.count(index == 0 ? 2 : 1, 1.2),
-          mainAxisSpacing: 5.0,
-          crossAxisSpacing: 5.0,
-          itemBuilder: (BuildContext context, int index) =>
-              new HomeItem(_elements[index], callBack: _onTapEvent)),
-      onRefresh: _refreshList,
-    );
+  Widget buildPastEventsView(BuildContext context) {
+    return new Container(
+        padding: EdgeInsets.all(16.0),
+        child: new GestureDetector(
+          onTap: () => print('Open past events'),
+          child: new Text(
+            "Ver eventos pasados",
+            style: Theme.of(context).textTheme.caption.apply(
+                  color: CompanyColors.blue[900],
+                ),
+            textAlign: TextAlign.center,
+          ),
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: CompanyColors.offwhite,
+        child: StaggeredGridView.countBuilder(
+            crossAxisCount: 2,
+            padding: EdgeInsets.all(8.0),
+            itemCount: _elements.length,
+            staggeredTileBuilder: (int index) {
+              if (_elements != null && _elements.length > 0 && index != _elements.length - 1) {
+                return new StaggeredTile.count(_elements[index].isUpcoming ? 2 : 1, 1.75);
+              } else {
+                return new StaggeredTile.count(2, 1);
+              }
+            },
+            itemBuilder: (BuildContext context, int index) {
+              if (index < _elements.length - 1) {
+                return new HomeItem(_elements[index], callback: _onTapEvent);
+              } else {
+                return buildPastEventsView(context);
+              }
+            }));
   }
 }
