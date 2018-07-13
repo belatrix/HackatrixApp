@@ -7,7 +7,6 @@ class HomeBloc {
   final EventRepository repository;
 
   Stream<List<Event>> _results = Stream.empty();
-
   ReplaySubject<int> _query = ReplaySubject<int>();
 
   // Getters
@@ -16,10 +15,7 @@ class HomeBloc {
   Sink<int> get query => _query;
 
   HomeBloc(this.repository) {
-    _results =
-        // Use  distinct() when you want to listen for different events
-        //_query.distinct().asyncMap(repository.getEventList).asBroadcastStream();
-        _query.asyncMap(repository.getEventList).asBroadcastStream();
+    _results = _query.asyncMap(repository.getEventList).asBroadcastStream();
   }
 
   void dispose() {

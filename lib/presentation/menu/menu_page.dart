@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hackatrix/data/repository/rest/user_rest.dart';
 import 'package:hackatrix/domain/model/user.dart';
 import 'package:hackatrix/presentation/admin/event_list_page.dart';
+import 'package:hackatrix/presentation/profile/login/bloc/authenticate/login_bloc.dart';
+import 'package:hackatrix/presentation/profile/login/bloc/authenticate/login_provider.dart';
+import 'package:hackatrix/presentation/profile/login/bloc/login_page_2.dart';
 import 'package:hackatrix/presentation/profile/login/login_page.dart';
 import 'package:hackatrix/presentation/profile/my_profile/profile_page.dart';
 import 'package:hackatrix/presentation/util/preferences/preference_manager.dart';
 
 class MenuSidePage extends StatefulWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey;
+
   MenuSidePage(this._scaffoldKey);
 
   @override
@@ -22,7 +27,8 @@ class _MenuSidePageState extends State<MenuSidePage> {
     Navigator.push(
       context,
       new MaterialPageRoute(
-        builder: (BuildContext context) => new LoginPage(_onUserLogged),
+        builder: (BuildContext context) => LoginProvider(
+            loginBloc: LoginBloC(UserRest()), child: LoginPage2(_onUserLogged)),
       ),
     );
   }
@@ -32,7 +38,8 @@ class _MenuSidePageState extends State<MenuSidePage> {
     Navigator.push(
       context,
       new MaterialPageRoute(
-        builder: (BuildContext context) => new ProfilePage(_user, _onUserLogOut),
+        builder: (BuildContext context) =>
+            new ProfilePage(_user, _onUserLogOut),
       ),
     );
   }
@@ -91,15 +98,20 @@ class _MenuSidePageState extends State<MenuSidePage> {
       subItems.add(createHeaderWithPadding(new Text("Perfil")));
       subItems.add(new FlatButton.icon(
         icon: new Icon(Icons.person),
-        label: new Text("Perfil", style: TextStyle(color: Colors.blueGrey),),
+        label: new Text(
+          "Perfil",
+          style: TextStyle(color: Colors.blueGrey),
+        ),
         onPressed: () => _onTapProfile(),
       ));
-
 
       subItems.add(createHeaderWithPadding(new Text("Admin")));
       subItems.add(new FlatButton.icon(
         icon: new Icon(Icons.settings),
-        label: new Text("Admin", style: TextStyle(color: Colors.blueGrey),),
+        label: new Text(
+          "Admin",
+          style: TextStyle(color: Colors.blueGrey),
+        ),
         onPressed: () => _onTapAdmin(),
       ));
     } else {
@@ -156,7 +168,10 @@ class _MenuSidePageState extends State<MenuSidePage> {
     }
   }
 
-  Padding createHeaderWithPadding(Widget child){
-    return new Padding(child: child, padding: EdgeInsets.symmetric(vertical: 6.0),);
+  Padding createHeaderWithPadding(Widget child) {
+    return new Padding(
+      child: child,
+      padding: EdgeInsets.symmetric(vertical: 6.0),
+    );
   }
 }
