@@ -27,6 +27,8 @@ class _HomePageState extends State<HomePage> implements HomeView, DrawerListener
   int _selectedDrawerIndex;
   City _city;
 
+  GlobalKey<EventPageState> _key = new GlobalKey<EventPageState>();
+
   _HomePageState() {
     _presenter = new HomePresenter(this);
     _drawer = new DrawerWidget(this);
@@ -66,7 +68,10 @@ class _HomePageState extends State<HomePage> implements HomeView, DrawerListener
   Widget _getDrawerItemWidget() {
     switch (_selectedDrawerIndex) {
       case 0:
-        return new EventPage(_city.id);
+        return new EventPage(
+          key: _key,
+          cityId: _city.id,
+        );
       default:
         return null;
     }
@@ -107,12 +112,15 @@ class _HomePageState extends State<HomePage> implements HomeView, DrawerListener
               onChanged: (city) {
                 setState(() {
                   _city = city;
+                  _key.currentState.loadNewEvents(_city.id);
                 });
               }));
     } else {
       return Text(
         _drawer.getDrawerTitle(_selectedDrawerIndex),
-        style: CompanyTextStyle.H6,
+        style: CompanyTextStyle.H6.apply(
+          color: Colors.white,
+        ),
       );
     }
   }

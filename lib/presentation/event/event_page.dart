@@ -9,33 +9,36 @@ import 'package:hackatrix/presentation/event_detail/event_detail_page.dart';
 import 'package:hackatrix/presentation/util/theme.dart';
 
 class EventPage extends StatefulWidget {
-  final int _cityId;
+  final Key key;
+  final int cityId;
 
-  EventPage(this._cityId);
+  EventPage({this.key, this.cityId}) : super(key: key);
 
   @override
-  _EventPageState createState() {
-    return new _EventPageState();
+  EventPageState createState() {
+    return new EventPageState(cityId);
   }
 }
 
-class _EventPageState extends State<EventPage> implements EventView {
+class EventPageState extends State<EventPage> implements EventView {
   EventPresenter _presenter;
   List<dynamic> _elements = List();
   Status _status;
+  int _cityId = 0;
 
-  _EventPageState() {
+  EventPageState(this._cityId) {
     _presenter = new EventPresenter(this, new EventRest());
   }
 
   @override
   void initState() {
+    loadNewEvents(_cityId);
     super.initState();
-    _firstLoad();
   }
 
-  _firstLoad() async {
-    _presenter.actionGetEventList(widget._cityId);
+  void loadNewEvents(cityId) async {
+    this._cityId = cityId;
+    _presenter.actionGetEventList(_cityId);
   }
 
   void _onTapEvent(Event event) {
@@ -61,26 +64,23 @@ class _EventPageState extends State<EventPage> implements EventView {
         list[i].title = list[i].title.replaceAll("Hackatrix ", "");
       }
     }
-    _elements..add("");
-    setState(() {
-      _elements = list;
-    });
+    _elements = list;
+    _elements.add("");
+    setState(() {});
   }
 
   @override
   void onEmptyResult() {
     _status = Status.EMPTY;
-    setState(() {
-      _elements.clear();
-    });
+    _elements.clear();
+    setState(() {});
   }
 
   @override
   void onError() {
     _status = Status.ERROR;
-    setState(() {
-      _elements.clear();
-    });
+    _elements.clear();
+    setState(() {});
   }
 
   @override
@@ -141,7 +141,9 @@ class _EventPageState extends State<EventPage> implements EventView {
             textAlign: TextAlign.center,
           ),
           new GestureDetector(
-            onTap: _firstLoad,
+            onTap: (() {
+              loadNewEvents(_cityId);
+            }),
             child: new Text(
               "Inténtelo nuevamente",
               style: Theme.of(context).textTheme.caption.apply(
@@ -170,7 +172,9 @@ class _EventPageState extends State<EventPage> implements EventView {
             staggeredTileBuilder: (int index) {
               if (_elements != null && _elements.length > 0 && index != _elements.length - 1) {
                 return new StaggeredTile.count(_elements[index].isUpcoming ? 2 : 1, 1.75);
-              } else {
+              } else if(index == _elements.length - 1){
+                return new StaggeredTile.count(2, 0.25);
+              }else{
                 return new StaggeredTile.count(2, 1);
               }
             },
