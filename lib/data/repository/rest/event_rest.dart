@@ -12,53 +12,53 @@ class EventRest implements EventRepository {
   NetworkUtil _netUtil = new NetworkUtil();
 
   @override
-  Future<List<Event>> getUpcomingEventList(int city) {
+  Future<List<dynamic>> getUpcomingEventList(int city) {
     return _netUtil
         .get(API_UPCOMING_EVENT_LIST, parameters: city > 0 ? {"city": city.toString()} : null)
         .then((dynamic response) {
-      List<Event> list = List();
+      List<dynamic> list = List();
       (response as List).forEach((dataItem) => list.add(Event.fromJson(dataItem)));
       return list;
     });
   }
 
   @override
-  Future<List<Event>> getEventList(int city) {
+  Future<List<dynamic>> getEventList(int city) {
     return _netUtil
         .get(API_EVENT_LIST, parameters: city > 0 ? {"city": city.toString()} : null)
         .then((dynamic response) {
       //if(response["error"]) throw new Exception(response["error_msg"]);
-      List<Event> list = List();
+      List<dynamic> list = List();
       (response as List).forEach((dataItem) => list.add(Event.fromJson(dataItem)));
       return list;
     });
   }
 
   @override
-  Future<List<Idea>> getIdeasByEventList(int eventId) {
+  Future<List<dynamic>> getIdeasByEventList(int eventId) {
     return _netUtil.get(API_EVENT_IDEA_LIST(eventId)).then((dynamic response) {
       //if(response["error"]) throw new Exception(response["error_msg"]);
-      List<Idea> list = List();
+      List<dynamic> list = List();
       (response as List).forEach((dataItem) => list.add(Idea.fromJson(dataItem)));
       return list;
     });
   }
 
   @override
-  Future<List<Vote>> getVotesByEventList(int eventId) {
+  Future<List<dynamic>> getVotesByEventList(int eventId) {
     return _netUtil.get(API_EVENT_IDEA_VOTES(eventId)).then((dynamic response) {
       //if(response["error"]) throw new Exception(response["error_msg"]);
-      List<Vote> list = List();
+      List<dynamic> list = List();
       (response as List).forEach((dataItem) => list.add(Vote.fromJson(dataItem)));
       return list;
     });
   }
 
   @override
-  Future<List<Meeting>> getMeetingByEventList(int eventId) {
+  Future<List<dynamic>> getMeetingByEventList(int eventId) {
     return _netUtil.get(API_EVENT_MEETING_LIST, parameters: {"event": eventId.toString()}).then((dynamic response) {
       //if(response["error"]) throw new Exception(response["error_msg"]);
-      List<Meeting> list = List();
+      List<dynamic> list = List();
       (response as List).forEach((dataItem) => list.add(Meeting.fromJson(dataItem)));
       return list;
     });
