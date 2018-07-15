@@ -1,8 +1,13 @@
 import 'package:hackatrix/data/repository/event_repository.dart';
-import 'package:hackatrix/domain/model/event.dart';
 
 abstract class EventView {
-  void onResult(List<Event> list);
+  void onLoading();
+
+  void onEmptyResult();
+
+  void onResult(List<dynamic> list);
+
+  void onError();
 }
 
 class EventPresenter {
@@ -12,14 +17,16 @@ class EventPresenter {
   EventPresenter(this._view, this._repository);
 
   void actionGetEventList(int city) {
-    print("cargando...");
-    _repository
-        .getEventList(city)
-        .then((items) => _view.onResult(items))
-        .catchError((onError) {
-      print(onError);
-      // _view.onLoadContactsError();
+    _view.onLoading();
+    _repository.getUpcomingEventList(city).then((items) {
+      if (items.length > 0) {
+        _view.onResult(items);
+      } else {
+        _view.onEmptyResult();
+      }
+    }).catchError((onError) {
       print("Error : $onError");
+      _view.onError();
     });
   }
 }

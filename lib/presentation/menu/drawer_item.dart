@@ -42,7 +42,7 @@ class HeadingItem extends DrawerItem {
 }
 
 final drawerItems = [
-  new ListItem('Eventos', true, Icon(Icons.today), false, true, true, true),
+  new ListItem('Próximos Eventos', true, Icon(Icons.today), false, true, true, true),
   new HeadingItem('Mis Datos & Ideas', true, true, true, true),
   new ListItem('Mi Cuenta', false, Icon(Icons.person), true, true, true, true),
   new ListItem('Mis Ideas', true, ImageIcon(AssetImage('images/ic_idea.png')), true, true, true, true),
