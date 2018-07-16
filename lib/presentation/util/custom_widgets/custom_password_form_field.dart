@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
 
-class PasswordField extends StatefulWidget {
-  const PasswordField({
-    this.fieldKey,
-    this.hintText,
-    this.labelText,
-    this.helperText,
-    this.onSaved,
-    this.validator,
-    this.onFieldSubmitted,
-    this.inputBorder,
-    this.controller
-  });
+class CustomPasswordFormField extends StatefulWidget {
+  const CustomPasswordFormField(
+      {this.fieldKey,
+      this.hintText,
+      this.labelText,
+      this.helperText,
+      this.onSaved,
+      this.validator,
+      this.onFieldSubmitted,
+      this.controller});
 
   final Key fieldKey;
   final String hintText;
   final String labelText;
   final String helperText;
-  final InputBorder inputBorder;
   final FormFieldSetter<String> onSaved;
   final FormFieldValidator<String> validator;
   final ValueChanged<String> onFieldSubmitted;
   final TextEditingController controller;
 
   @override
-  _PasswordFieldState createState() => new _PasswordFieldState();
+  _CustomPasswordFormFieldState createState() => new _CustomPasswordFormFieldState();
 }
 
-class _PasswordFieldState extends State<PasswordField> {
+class _CustomPasswordFormFieldState extends State<CustomPasswordFormField> {
   bool _obscureText = true;
 
   @override
@@ -36,14 +33,15 @@ class _PasswordFieldState extends State<PasswordField> {
       key: widget.fieldKey,
       obscureText: _obscureText,
       maxLines: 1,
+      autovalidate: false,
       autocorrect: false,
+      keyboardType: TextInputType.text,
       onSaved: widget.onSaved,
       validator: widget.validator,
+      style: Theme.of(context).textTheme.subhead,
       onFieldSubmitted: widget.onFieldSubmitted,
       controller: widget.controller,
       decoration: new InputDecoration(
-        border: widget.inputBorder,
-        //filled: true,
         hintText: widget.hintText,
         labelText: widget.labelText,
         helperText: widget.helperText,

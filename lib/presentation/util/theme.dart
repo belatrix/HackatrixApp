@@ -10,6 +10,9 @@ ThemeData buildCompanyThemeData() {
     backgroundColor: CompanyColors.offwhite,
     splashColor: CompanyColors.orange,
     textTheme: buildCompanyTextTheme(base.textTheme),
+    inputDecorationTheme: InputDecorationTheme(
+      border: const OutlineInputBorder(),
+    ),
   );
 }
 ThemeData buildDarkCompanyThemeData() {
@@ -56,8 +59,7 @@ class CompanyColors {
   static const bluePrimaryValue = 0xFF1A4F9E;
 
   CompanyColors._(); // this basically makes it so you can instantiate this class
-  static const MaterialColor orange =
-      const MaterialColor(orangePrimaryValue, const <int, Color>{
+  static const MaterialColor orange = const MaterialColor(orangePrimaryValue, const <int, Color>{
     50: const Color(0xFFFDF3E2),
     100: const Color(0xFFFBE0B6),
     200: const Color(0xFFF9CB87),
@@ -70,8 +72,7 @@ class CompanyColors {
     900: const Color(0xFFD7591A),
   });
 
-  static const MaterialAccentColor blue =
-      const MaterialAccentColor(bluePrimaryValue, const <int, Color>{
+  static const MaterialAccentColor blue = const MaterialAccentColor(bluePrimaryValue, const <int, Color>{
     50: const Color(0xFFE4F3FC),
     100: const Color(0xFFBEE1FA),
     200: const Color(0xFF96CEF7),
