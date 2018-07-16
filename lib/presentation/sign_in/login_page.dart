@@ -60,22 +60,24 @@ class _LoginPageState extends State<LoginPage> implements LoginView {
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
-  void _createAccount() {
-    Navigator.push(
-      context,
-      new MaterialPageRoute(
-        builder: (BuildContext context) => new CreateAccountPage(),
-      ),
-    );
+  void _createAccount() async {
+    bool accountCreated = await Navigator
+        .of(context)
+        .push(new MaterialPageRoute(builder: (BuildContext context) => new CreateAccountPage()));
+    if (accountCreated) {
+      final snackBar = new SnackBar(content: new Text("Te enviamos un correo con tu clave temporal."));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
   }
 
-  void _forgotPassword() {
-    Navigator.push(
-      context,
-      new MaterialPageRoute(
-        builder: (BuildContext context) => new ForgotPasswordPage(),
-      ),
-    );
+  void _forgotPassword() async {
+    bool sentRequest = await Navigator
+        .of(context)
+        .push(new MaterialPageRoute(builder: (BuildContext context) => new ForgotPasswordPage()));
+    if (sentRequest) {
+      final snackBar = new SnackBar(content: new Text("Te enviamos un correo con tu clave temporal."));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }
   }
 
   @override
