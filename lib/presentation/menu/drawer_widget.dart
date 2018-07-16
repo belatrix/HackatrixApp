@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hackatrix/domain/model/user.dart';
-import 'package:hackatrix/presentation/profile/login/login_page.dart';
+import 'package:hackatrix/presentation/event/event_page.dart';
+import 'package:hackatrix/presentation/sign_in/login_page.dart';
 import 'package:hackatrix/presentation/util/theme.dart';
 
 import 'drawer_item.dart';

@@ -3,7 +3,10 @@ import 'package:hackatrix/domain/model/user.dart';
 import 'package:hackatrix/presentation/util/preferences/preference_manager.dart';
 
 abstract class LoginView {
+  void showPasswordResetScreen();
+
   void onResult(User user);
+
   void onError(String message);
 }
 
@@ -15,10 +18,14 @@ class LoginPresenter {
   LoginPresenter(this._view, this._repository);
 
   void actionAuthenticate(String email, String password) {
-    _repository
-        .authenticate(email, password)
-        .then((token) => _getUserProfile(token))
-        .catchError((onError) {
+    _repository.authenticate(email, password).then((userAuthentication) {
+      if (userAuthentication.isPasswordResetRequired) {
+        _preferences.saveToken(userAuthentication.token);
+        _view.showPasswordResetScreen();
+      } else {
+        _getUserProfile(userAuthentication.token);
+      }
+    }).catchError((onError) {
       print(onError.toString());
       _view.onError(onError.toString());
     });
