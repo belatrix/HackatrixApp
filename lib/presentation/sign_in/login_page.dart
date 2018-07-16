@@ -6,12 +6,11 @@ import 'package:hackatrix/presentation/util/custom_widgets/custom_primary_button
 import 'package:hackatrix/presentation/util/custom_widgets/custom_secondary_button.dart';
 import 'package:hackatrix/presentation/util/custom_widgets/custom_text_form_field.dart';
 import 'package:hackatrix/presentation/util/theme.dart';
-import 'package:progress_hud/progress_hud.dart';
 import 'package:validator/validator.dart';
 
+import 'change_password_page.dart';
 import 'create_account_page.dart';
 import 'forgot_password_page.dart';
-import 'change_password_page.dart';
 import 'login_presenter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,40 +25,37 @@ class _LoginPageState extends State<LoginPage> implements LoginView {
   String _email;
   String _password;
   LoginPresenter _presenter;
-  ProgressHUD _progressHUD;
 
   _LoginPageState() {
     _presenter = new LoginPresenter(this, new UserRest());
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _progressHUD = new ProgressHUD(
-      backgroundColor: Colors.black12,
-      loading: false,
-    );
   }
 
   void _submit() {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
-      _progressHUD.state.show();
       _presenter.actionAuthenticate(_email, _password);
       FocusScope.of(context).requestFocus(new FocusNode());
     }
   }
 
   @override
+  void showPasswordResetScreen() async {
+    User user = await Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) {
+      return new ChangePasswordPage();
+    }));
+    if (user != null) {
+      Navigator.of(context).pop(user);
+    }
+  }
+
+  @override
   void onResult(User user) {
-    _progressHUD.state.dismiss();
     Navigator.of(context).pop(user);
   }
 
   @override
   void onError(String message) {
-    _progressHUD.state.dismiss();
     final snackBar = new SnackBar(content: new Text(message));
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
@@ -78,15 +74,6 @@ class _LoginPageState extends State<LoginPage> implements LoginView {
       context,
       new MaterialPageRoute(
         builder: (BuildContext context) => new ForgotPasswordPage(),
-      ),
-    );
-  }
-
-  void _changePassword() {
-    Navigator.push(
-      context,
-      new MaterialPageRoute(
-        builder: (BuildContext context) => new ChangePasswordPage(),
       ),
     );
   }

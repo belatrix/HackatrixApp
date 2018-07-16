@@ -16,10 +16,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> implements Create
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   String _email;
-  RecoverPresenter _presenter;
+  CreateAccountPresenter _presenter;
 
   _CreateAccountPageState() {
-    _presenter = new RecoverPresenter(this, new UserRest());
+    _presenter = new CreateAccountPresenter(this, new UserRest());
   }
 
   void _submit() {

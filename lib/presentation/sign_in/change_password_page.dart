@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackatrix/data/repository/rest/user_rest.dart';
+import 'package:hackatrix/domain/model/user.dart';
 import 'package:hackatrix/presentation/util/custom_widgets/custom_password_form_field.dart';
 import 'package:hackatrix/presentation/util/custom_widgets/custom_secondary_button.dart';
 import 'package:hackatrix/presentation/util/custom_widgets/custom_text_form_field.dart';
@@ -8,6 +9,9 @@ import 'package:hackatrix/presentation/util/theme.dart';
 import 'change_password_presenter.dart';
 
 class ChangePasswordPage extends StatefulWidget {
+
+  ChangePasswordPage();
+
   @override
   _ChangePasswordPageState createState() => new _ChangePasswordPageState();
 }
@@ -17,8 +21,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> implements Chan
 
   String _oldPassword;
   String _newPassword;
-  String _confirmNewPassword;
   ChangePasswordPresenter _presenter;
+
+  TextEditingController _newPasswordController = TextEditingController();
 
   _ChangePasswordPageState() {
     _presenter = new ChangePasswordPresenter(this, new UserRest());
@@ -34,8 +39,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> implements Chan
   }
 
   @override
-  void onResult() {
-    Navigator.of(context).pop(true);
+  void onResult(User user) {
+    Navigator.of(context).pop(user);
   }
 
   @override
@@ -50,7 +55,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> implements Chan
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context).pop(false);
+              Navigator.of(context).pop();
             }),
         title: Text('Cambiar Contraseña'),
       ),
@@ -88,6 +93,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> implements Chan
                       ),
                       CustomTextFormField(
                         labelText: "Nueva contraseña",
+                        controller: _newPasswordController,
                         obscureText: true,
                         validator: (val) => val.isEmpty ? 'Contraseña no válida.' : null,
                         onSaved: (val) => _newPassword = val,
@@ -98,8 +104,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> implements Chan
                       CustomTextFormField(
                         labelText: "Confirmar nueva contraseña",
                         obscureText: true,
-                        validator: (val) => val.isEmpty ? 'Contraseña no válida.' : null,
-                        onSaved: (val) => _confirmNewPassword = val,
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return 'Contraseña no válida.';
+                          } else if (_newPasswordController.text != val) {
+                            return 'Las contraseñas deben coincidir';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                       SizedBox(
                         height: 48.0,
