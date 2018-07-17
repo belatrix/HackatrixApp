@@ -3,10 +3,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hackatrix/data/repository/rest/event_rest.dart';
 import 'package:hackatrix/domain/model/event.dart';
 import 'package:hackatrix/domain/model/status.dart';
-import 'package:hackatrix/presentation/event/event_item.dart';
-import 'package:hackatrix/presentation/event/evento_presenter.dart';
 import 'package:hackatrix/presentation/event_detail/event_detail_page.dart';
 import 'package:hackatrix/presentation/util/theme.dart';
+
+import 'event_item.dart';
+import 'event_presenter.dart';
+import 'past_event_page.dart';
 
 class EventPage extends StatefulWidget {
   final Key key;
@@ -60,7 +62,7 @@ class EventPageState extends State<EventPage> implements EventView {
   void onResult(List<dynamic> list) {
     _status = Status.SUCCESS;
     for (int i = 0; i < list.length; i++) {
-      if (!list[i].isUpcoming) {
+      if (!list[i].isGoing) {
         list[i].title = list[i].title.replaceAll("Hackatrix ", "");
       }
     }
@@ -123,6 +125,7 @@ class EventPageState extends State<EventPage> implements EventView {
 
   Widget buildOnEmpty(BuildContext context) {
     return Container(
+      color: CompanyColors.offwhite,
       padding: EdgeInsets.symmetric(vertical: 24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -171,10 +174,10 @@ class EventPageState extends State<EventPage> implements EventView {
             itemCount: _elements.length,
             staggeredTileBuilder: (int index) {
               if (_elements != null && _elements.length > 0 && index != _elements.length - 1) {
-                return new StaggeredTile.count(_elements[index].isUpcoming ? 2 : 1, 1.75);
-              } else if(index == _elements.length - 1){
+                return new StaggeredTile.count(_elements[index].isGoing ? 2 : 1, 1.75);
+              } else if (index == _elements.length - 1) {
                 return new StaggeredTile.count(2, 0.25);
-              }else{
+              } else {
                 return new StaggeredTile.count(2, 1);
               }
             },
@@ -189,9 +192,12 @@ class EventPageState extends State<EventPage> implements EventView {
 
   Widget buildPastEventsView(BuildContext context) {
     return new Container(
+        color: CompanyColors.offwhite,
         padding: EdgeInsets.all(16.0),
         child: new GestureDetector(
-          onTap: () => print('Open past events'),
+          onTap: () => Navigator
+              .of(context)
+              .push(new MaterialPageRoute(builder: (BuildContext context) => PastEventPage(_cityId))),
           child: new Text(
             "Ver eventos pasados",
             style: Theme.of(context).textTheme.caption.apply(
