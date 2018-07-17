@@ -21,7 +21,7 @@ class HomeItem extends StatelessWidget {
         imageUrl: _event.image,
         placeholder: new LinearProgressIndicator(),
         fit: BoxFit.cover,
-        height: _event.isUpcoming ? 194.0 : 168.0,
+        height: _event.isGoing ? 194.0 : 168.0,
         width: MediaQuery.of(context).size.width,
       ),
     );
@@ -42,7 +42,9 @@ class HomeItem extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       new Text(
-                        _event.isUpcoming ? "Próximamente".toUpperCase() : "".toUpperCase(),
+                        _event.isUpcoming
+                            ? "Próximamente".toUpperCase()
+                            : _event.isGoing ? "En Marcha".toUpperCase() : "".toUpperCase(),
                         style: CompanyTextStyle.Overline,
                         maxLines: 1,
                       ),

@@ -23,6 +23,17 @@ class EventRest implements EventRepository {
   }
 
   @override
+  Future<List<dynamic>> getPastEventList(int city) {
+    return _netUtil
+        .get(API_PAST_EVENT_LIST, parameters: city > 00 ? {"city": city.toString()} : null)
+        .then((dynamic response) {
+      List<dynamic> list = List();
+      (response as List).forEach((dataItem) => list.add(Event.fromJson(dataItem)));
+      return list;
+    });
+  }
+
+  @override
   Future<List<dynamic>> getEventList(int city) {
     return _netUtil
         .get(API_EVENT_LIST, parameters: city > 0 ? {"city": city.toString()} : null)
