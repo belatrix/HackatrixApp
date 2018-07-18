@@ -60,9 +60,6 @@ class _PastEventPageState extends State<PastEventPage> implements PastEventView 
   @override
   void onResult(List<dynamic> list) {
     _status = Status.SUCCESS;
-    for (int i = 0; i < list.length; i++) {
-      list[i].title = list[i].title.replaceAll("Hackatrix ", "");
-    }
     _elements = list;
     setState(() {});
   }

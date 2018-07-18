@@ -30,3 +30,12 @@ flutter:
     - images/ic_idea.png
     - images/ic_empty_events.png
     - images/ic_login_logo.png
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+        - asset: fonts/Roboto-Medium.ttf
+        - asset: fonts/Roboto-Light.ttf
+        - asset: fonts/Roboto-Bold.ttf
+          weight: 500

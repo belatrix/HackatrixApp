@@ -52,7 +52,7 @@ class HomeItem extends StatelessWidget {
                         height: 6.0,
                       ),
                       new Text(
-                        _event.title,
+                        _event.isGoing?_event.title:_event.title.replaceAll("Hackatrix ", ""),
                         style: CompanyTextStyle.H6,
                         maxLines: 1,
                         overflow: TextOverflow.fade,

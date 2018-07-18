@@ -9,7 +9,6 @@ import 'package:hackatrix/presentation/util/theme.dart';
 import 'change_password_presenter.dart';
 
 class ChangePasswordPage extends StatefulWidget {
-
   ChangePasswordPage();
 
   @override
@@ -95,6 +94,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> implements Chan
                         labelText: "Nueva contraseña",
                         controller: _newPasswordController,
                         obscureText: true,
+                        maxLines: 1,
                         validator: (val) => val.isEmpty ? 'Contraseña no válida.' : null,
                         onSaved: (val) => _newPassword = val,
                       ),
@@ -104,6 +104,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> implements Chan
                       CustomTextFormField(
                         labelText: "Confirmar nueva contraseña",
                         obscureText: true,
+                        maxLines: 1,
                         validator: (val) {
                           if (val.isEmpty) {
                             return 'Contraseña no válida.';

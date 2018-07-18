@@ -81,6 +81,7 @@ class _HomePageState extends State<HomePage> implements HomeView, DrawerListener
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: CustomAppBar(AppBar(
+        centerTitle: false,
         title: buildTitleAppBar(context),
         elevation: 0.0,
       )),

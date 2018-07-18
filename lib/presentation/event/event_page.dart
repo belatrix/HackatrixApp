@@ -61,11 +61,6 @@ class EventPageState extends State<EventPage> implements EventView {
   @override
   void onResult(List<dynamic> list) {
     _status = Status.SUCCESS;
-    for (int i = 0; i < list.length; i++) {
-      if (!list[i].isGoing) {
-        list[i].title = list[i].title.replaceAll("Hackatrix ", "");
-      }
-    }
     _elements = list;
     _elements.add("");
     setState(() {});

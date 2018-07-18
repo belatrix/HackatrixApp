@@ -15,6 +15,7 @@ ThemeData buildCompanyThemeData() {
     ),
   );
 }
+
 ThemeData buildDarkCompanyThemeData() {
   ThemeData base = ThemeData.light();
   return base.copyWith(
@@ -26,7 +27,22 @@ ThemeData buildDarkCompanyThemeData() {
 }
 
 TextTheme buildCompanyTextTheme(TextTheme base) {
-  return base.copyWith().apply();
+  return base
+      .copyWith(
+        body1: base.body1.copyWith(
+          color: Colors.black87,
+          fontSize: 16.0,
+          letterSpacing: 0.5,
+        ),
+        caption: base.caption.copyWith(
+          color: Colors.black54,
+          fontSize: 12.0,
+          letterSpacing: 0.4,
+        ),
+      ).apply(
+        fontFamily: 'Roboto',
+        bodyColor: Colors.black87,
+      );
 }
 
 ListTileTheme buildDrawerTileTheme() {
@@ -36,7 +52,6 @@ ListTileTheme buildDrawerTileTheme() {
 }
 
 class CompanyTextStyle {
-
   CompanyTextStyle._();
 
   static const TextStyle H6 = const TextStyle(

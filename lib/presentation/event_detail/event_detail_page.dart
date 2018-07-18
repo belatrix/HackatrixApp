@@ -1,109 +1,110 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hackatrix/domain/model/event.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hackatrix/presentation/event_detail/ideas/event_ideas_page.dart';
 import 'package:hackatrix/presentation/event_detail/information/event_information_page.dart';
-import 'package:hackatrix/presentation/event_detail/votes/event_votes_page.dart';
 import 'package:hackatrix/presentation/util/theme.dart' as theme;
 
-class EventDetailPage extends StatelessWidget {
+class EventDetailPage extends StatefulWidget {
   final Event _event;
+
   EventDetailPage(this._event);
+
+  @override
+  _EventDetailPageState createState() => _EventDetailPageState();
+}
+
+class _EventDetailPageState extends State<EventDetailPage> {
+  int _currentIndex = 0;
+
+  Widget _buildBodyContext(BuildContext context) {
+    if (_currentIndex == 0) {
+      return EventInformationPage(widget._event);
+    } else {
+      return EventIdeasPage(widget._event);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var imageHero = new Hero(
-      tag: "${_event.id}",
+      tag: "${widget._event.id}",
       child: new SizedBox.expand(
         child: new CachedNetworkImage(
-          imageUrl: _event.image,
+          imageUrl: widget._event.image,
           fit: BoxFit.cover,
         ),
       ),
     );
 
-    var votesPage = new EventVotesPage(_event);
+    var bottomItems = [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.info),
+        title: Text("Información"),
+      ),
+      BottomNavigationBarItem(
+        icon: ImageIcon(AssetImage('images/ic_idea.png')),
+        title: Text("Ideas"),
+      ),
+    ];
 
-    return new DefaultTabController(
-        length: 3,
-        child: new Scaffold(
-            body: new NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              new SliverAppBar(
-                expandedHeight: 200.0,
-                floating: false,
-                pinned: true,
-                iconTheme: theme.companyThemeIcon,
-                elevation:
-                    defaultTargetPlatform == TargetPlatform.android ? 5.0 : 0.0,
-                flexibleSpace: new FlexibleSpaceBar(
-                  //centerTitle: true,
-                  centerTitle: true,
-                  title: new Text(_event.title,
-                      style: new TextStyle(
+    return new Scaffold(
+      body: new NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            new SliverAppBar(
+              expandedHeight: 270.0,
+              floating: false,
+              pinned: true,
+              elevation: 0.0,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              actions: [
+                IconButton(
+                    icon: Icon(Icons.today),
+                    onPressed: () {
+                      print('Add to calendar');
+                    }),
+              ],
+              flexibleSpace: new FlexibleSpaceBar(
+                  centerTitle: false,
+                  title: Text(widget._event.title.replaceAll("Hackatrix ", ""),
+                      style: theme.CompanyTextStyle.H6.apply(
                         color: Colors.white,
-                        fontSize: 16.0,
                       )),
-                  background: new GridTile(
-                    child: imageHero,
-                    footer: new GridTileBar(
-                      backgroundColor: Colors.black38,
-                    ),
-                  ),
-                ),
-              ),
-              new SliverPersistentHeader(
-                delegate: new _SliverAppBarDelegate(new TabBar(
-                  labelColor: Colors.black87,
-                  unselectedLabelColor: Colors.grey,
-                  tabs: [
-                    new Tab(icon: new Icon(Icons.info), text: "ACERCA DE"),
-                    new Tab(
-                        icon: new Icon(Icons.lightbulb_outline), text: "IDEAS"),
-                    new Tab(
-                      icon: new Icon(Icons.group),
-                      text: "VOTOS",
-                    ),
-                  ],
-                )),
-                pinned: true,
-              ),
-            ];
-          },
-          body: new TabBarView(
-            children: [
-              new EventInformationPage(_event),
-              new EventIdeasPage(_event),
-              votesPage,
-            ],
-          ),
-        )));
-  }
-}
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(
-      color: Colors.white,
-      child: _tabBar,
+                  background: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: <Widget>[
+                      imageHero,
+                      Container(
+                        height: 60.0,
+                        foregroundDecoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            Colors.transparent,
+                            Colors.black87,
+                          ], tileMode: TileMode.clamp),
+                        ),
+                      )
+                    ],
+                  )),
+            ),
+          ];
+        },
+        body: _buildBodyContext(context),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: bottomItems,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
     );
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
   }
 }
