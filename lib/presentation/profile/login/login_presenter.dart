@@ -15,13 +15,13 @@ class LoginPresenter {
   LoginPresenter(this._view, this._repository);
 
   void actionAuthenticate(String email, String password) {
-    _repository
+    /*_repository
         .authenticate(email, password)
         .then((token) => _getUserProfile(token))
         .catchError((onError) {
       print(onError.toString());
       _view.onError(onError.toString());
-    });
+    });*/
   }
 
   _getUserProfile(String token) {

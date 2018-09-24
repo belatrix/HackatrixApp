@@ -21,9 +21,9 @@ class _HomePageState extends State<HomePage> implements HomeView {
   List<Event> _elements = List();
   Completer<Null> _completer;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey =
-      new GlobalKey<ScaffoldState>();
+  new GlobalKey<ScaffoldState>();
 
   _HomePageState() {
     _presenter = new HomePresenter(this, new EventRest());
@@ -53,11 +53,11 @@ class _HomePageState extends State<HomePage> implements HomeView {
     });
   }
 
-  void _onTapEvent(Event event){
+  void _onTapEvent(Event event, BuildContext context) {
     print("event tapped: ${event.title}");
     Navigator.push(context, new MaterialPageRoute(
-              builder: (BuildContext context) => new EventDetailPage(event),
-            ),);
+      builder: (BuildContext context) => new EventDetailPage(event),
+    ),);
   }
 
   @override
@@ -76,20 +76,20 @@ class _HomePageState extends State<HomePage> implements HomeView {
     return new RefreshIndicator(
       key: _refreshIndicatorKey,
       child: StaggeredGridView.countBuilder(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(4.0),
-        itemCount: _elements.length,
-        staggeredTileBuilder: (int index) =>
-            new StaggeredTile.count(index == 0 ? 2 : 1, 1.2),
-        mainAxisSpacing: 5.0,
-        crossAxisSpacing: 5.0,
-        itemBuilder: (BuildContext context, int index) =>
-            new HomeItem(_elements[index], callBack: _onTapEvent)
+          crossAxisCount: 2,
+          padding: EdgeInsets.all(4.0),
+          itemCount: _elements.length,
+          staggeredTileBuilder: (int index) =>
+          new StaggeredTile.count(index == 0 ? 2 : 1, 1.2),
+          mainAxisSpacing: 5.0,
+          crossAxisSpacing: 5.0,
+          itemBuilder: (BuildContext context, int index) =>
+          new HomeItem(_elements[index], context, callBack: _onTapEvent)
       ),
       onRefresh: _refreshList,
     );
   }
-  
+
 
 }
 

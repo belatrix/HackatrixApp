@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hackatrix/presentation/home/home_page.dart';
+import 'package:hackatrix/data/repository/rest/event_rest.dart';
+import 'package:hackatrix/presentation/home/bloc/home_bloc.dart';
+import 'package:hackatrix/presentation/home/bloc/home_page_2.dart';
+import 'package:hackatrix/presentation/home/bloc/home_provider.dart';
 import 'package:hackatrix/presentation/util/theme.dart' as theme;
 
 void main() => runApp(new HackatrixApp());
 
 class HackatrixApp extends StatelessWidget {
-
-  @override
   Widget build(BuildContext context) {
     config();
-    return new MaterialApp(
-      home:  new HomePage(),
+    return MaterialApp(
+      home:
+          HomeProvider(homeBloc: HomeBloc(EventRest()), child: HomePage2(true)),
       theme: theme.CompanyThemeData,
     );
   }
